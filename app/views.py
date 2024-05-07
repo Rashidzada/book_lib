@@ -125,23 +125,34 @@ def profile(request):
 from django.shortcuts import render, redirect
 from .models import UserProfile
 
+from django.shortcuts import render, redirect
+from .models import UserProfile
+
 def upload_profile(request):
     user = request.user
     
     if request.method == 'POST':
-       
         # Retrieve data from the HTML form
         bio = request.POST.get('bio')
         picture = request.FILES.get('picture')
         phone = request.POST.get('phone')
 
-        # Create a new UserProfile instance
-        profile = UserProfile(user=request.user, bio=bio, picture=picture, phone=phone,role = request.user.userprofile.role)
-        profile.save()
+        # Check if the user already has a UserProfile instance
+        if hasattr(user, 'userprofile'):
+            # Update the existing UserProfile instance
+            profile = user.userprofile
+            profile.bio = bio
+            profile.picture = picture
+            profile.phone = phone
+            profile.save()
+        else:
+            # Create a new UserProfile instance
+            profile = UserProfile(user=user, bio=bio, picture=picture, phone=phone)
+            profile.save()
 
         return redirect('profile')  # Redirect to profile detail page
     else:
-        return render(request, 'upload_profile.html',{'user':user})
+        return render(request, 'upload_profile.html', {'user': user})
 
 
 
