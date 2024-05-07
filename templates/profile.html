@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - Book Lib</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-gray-100 font-sans leading-normal tracking-normal">
+
+    <!-- Navigation -->
+    <nav id="header" class="bg-white fixed w-full z-10 top-0 shadow">
+        <!-- Navigation code here -->
+    </nav>
+
+    <!-- "Your Profile" Heading -->
+    <div class="container mx-auto px-4 pt-24">
+        <h1 class="text-5xl font-bold text-gray-800 leading-tight mb-4 text-center">{{ user_profile.user.first_name }}</h1>
+    </div>
+
+    <!-- Profile Section -->
+    <div class="bg-cover bg-center" style="background-image: url('https://source.unsplash.com/random/1600x900');">
+        <div class="container mx-auto px-4">
+
+            <div class="flex flex-col items-center justify-center h-full text-center">
+                <!-- Rounded, attractive image -->
+                <div class="w-32 h-32 rounded-full overflow-hidden shadow-lg bg-gray-200 mx-auto mb-6">
+                    {% if user_profile.picture %}
+                        <img src="{{ user_profile.picture.url }}" alt="User Profile Image" class="object-cover w-full h-full">
+                    {% else %}
+                        <img src="https://source.unsplash.com/random/200x200" alt="User Profile Image" class="object-cover w-full h-full">
+                    {% endif %}
+                </div>
+                <div class="profile-container bg-white shadow-md rounded-lg px-8 pt-6 pb-8 mb-4 w-full lg:w-1/2">
+                    <!-- Profile content -->
+                    <table class="w-full mb-4">
+                        <tr>
+                            <th class="px-4 py-2 bg-gray-100">Bio</th>
+                            <td class="px-4 py-2">{{ user_profile.bio }}</td>
+                        </tr>
+                        <tr>
+                            <th class="px-4 py-2 bg-gray-100">Name</th>
+                            <td class="px-4 py-2">{{ user_profile.user.first_name }}</td>
+                        </tr>
+                        <tr>
+                            <th class="px-4 py-2 bg-gray-100">Email</th>
+                            <td class="px-4 py-2">{{ user_profile.user.email }}</td>
+                        </tr>
+                        <tr>
+                            <th class="px-4 py-2 bg-gray-100">Phone</th>
+                            <td class="px-4 py-2">{{ user_profile.phone }}</td>
+                        </tr>
+                        <!-- Add other user-related fields here -->
+                    </table>
+                    <div class="flex justify-center space-x-4">
+                        <a href="{% url 'upload_profile' %}" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 inline-block w-32 text-center">Upload</a>
+                        <a href="{% url 'edit_profile' %}" class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 inline-block w-32 text-center">Edit</a>
+                        <a href="{% url 'dashboard' %}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 inline-block w-32 text-center">Dashboard</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+
+</html>

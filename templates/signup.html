@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - Book Lib</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-gray-100 font-sans leading-normal tracking-normal">
+
+    <!-- Navigation -->
+    <nav id="header" class="bg-white fixed w-full z-10 top-0 shadow">
+        <div class="w-full container mx-auto flex flex-wrap items-center justify-between mt-0 py-2">
+            <div class="flex items-center pl-4">
+                <a class="text-gray-900 text-base no-underline hover:no-underline font-extrabold text-xl"
+                    href="/">Book Lib</a>
+            </div>
+            <div class="block lg:hidden pr-4">
+                <button id="nav-toggle"
+                    class="flex items-center px-3 py-2 border rounded text-gray-500 border-gray-600 hover:text-gray-700 hover:border-blue-500 appearance-none focus:outline-none">
+                    <svg class="fill-current h-3 w-3" viewBox="0 0 20 20"
+                        xmlns="http://www.w3.org/2000/svg"><title>Menu</title><path
+                            d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" /></svg>
+                </button>
+            </div>
+            <div
+                class="w-full flex-grow lg:flex lg:items-center lg:w-auto hidden mt-2 lg:mt-0 bg-white lg:bg-transparent z-20"
+                id="nav-content">
+                <ul class="list-reset lg:flex justify-end flex-1 items-center">
+                    <li class="mr-3">
+                        <a class="inline-block py-2 px-4 text-gray-900 font-bold no-underline" href="/">Home</a>
+                    </li>
+                    <li class="mr-3">
+                        <a class="inline-block text-gray-600 no-underline hover:text-gray-900 hover:text-underline py-2 px-4"
+                            href="/login/">Login</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Signup Section -->
+    <div class="pt-24 bg-cover bg-center" style="background-image: url('https://source.unsplash.com/random/1600x900');">
+        <div class="container mx-auto px-4">
+
+            <div class="flex flex-col items-center justify-center h-full text-center">
+                <h1 class="text-5xl font-bold text-white leading-tight mb-4">Sign Up</h1>
+                <p class="text-lg text-white mb-8">Create your account to access our services.</p>
+                <form  method="POST" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-full lg:w-1/2">
+                    {%csrf_token%}
+                    <div class="mb-4">
+                        <label for="username" class="block text-gray-700 text-sm font-bold mb-2">Username:</label>
+                        <input type="text" id="username" name="username"
+                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    </div>
+                    <div class="mb-4">
+                        <label for="email" class="block text-gray-700 text-sm font-bold mb-2">Email:</label>
+                        <input type="email" id="email" name="email"
+                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    </div>
+                    <div class="mb-4">
+                        <label for="password" class="block text-gray-700 text-sm font-bold mb-2">Password:</label>
+                        <input type="password" id="password" name="password"
+                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    </div>
+                    <div class="mb-4">
+                        <label for="confirm_password"
+                            class="block text-gray-700 text-sm font-bold mb-2">Confirm Password:</label>
+                        <input type="password" id="confirm_password" name="confirm_password"
+                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    </div>
+                    <div class="mb-4">
+                        <label for="role" class="block text-gray-700 text-sm font-bold mb-2">Role:</label>
+                        <div class="flex items-center">
+                            <input type="radio" id="teacher" name="role" value="teacher"
+                                class="mr-2 leading-tight focus:outline-none">
+                            <label for="teacher" class="text-sm text-gray-700">Teacher</label>
+                        </div>
+                        <div class="flex items-center mt-2">
+                            <input type="radio" id="student" name="role" value="student"
+                                class="mr-2 leading-tight focus:outline-none">
+                            <label for="student" class="text-sm text-gray-700">Student</label>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <button type="submit"
+                            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                            Sign Up
+                        </button>
+                    </div>
+                </form>
+                <p class="text-gray-300 text-sm mt-3">Already have an account? <a href="{% url 'login_view'%}"
+                        class="text-blue-500 hover:text-blue-700">Login</a></p>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+
+</html>

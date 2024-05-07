@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delete Book</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto py-8">
+        <div class="max-w-md mx-auto bg-white p-8 rounded shadow-md">
+            <h1 class="text-2xl font-bold mb-4">Confirm Deletion</h1>
+            <p class="mb-4">Are you sure you want to delete the book "{{ book.title }}"?</p>
+            <form action="{% url 'delete_book' book.id %}" method="POST">
+                {% csrf_token %}
+                <button type="submit" class="bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600">Delete Book</button>
+                <a href="{% url 'available_books' %}" class="text-gray-600 ml-4 hover:underline">Cancel</a>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

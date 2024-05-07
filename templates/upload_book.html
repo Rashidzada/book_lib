@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Book</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+{%for message in messages%}
+<script>
+    alert('{{message}}');
+</script>
+{%endfor%}
+<body class="bg-gray-100">
+    <div class="container mx-auto py-8">
+        <div class="max-w-md mx-auto bg-white p-8 rounded shadow-md">
+            <h1 class="text-2xl font-bold mb-4">Upload New Book</h1>
+            <form action="{% url 'upload_book' %}" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="mb-4">
+                    <label for="title" class="block text-sm font-semibold text-gray-600 mb-1">Title</label>
+                    <input type="text" id="title" name="title" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-500" required>
+                </div>
+                <div class="mb-4">
+                    <label for="author" class="block text-sm font-semibold text-gray-600 mb-1">Author</label>
+                    <input type="text" id="author" name="author" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-500" required>
+                </div>
+                <div class="mb-4">
+                    <label for="isbn" class="block text-sm font-semibold text-gray-600 mb-1">ISBN</label>
+                    <input type="text" id="isbn" name="isbn" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-500" required>
+                </div>
+                <div class="mb-4">
+                    <label for="genre" class="block text-sm font-semibold text-gray-600 mb-1">Genre</label>
+                    <input type="text" id="genre" name="genre" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-500">
+                </div>
+                <div class="mb-4">
+                    <label for="description" class="block text-sm font-semibold text-gray-600 mb-1">Description</label>
+                    <textarea id="description" name="description" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-500" rows="4"></textarea>
+                </div>
+                <div class="mb-4">
+                    <label for="cover_image" class="block text-sm font-semibold text-gray-600 mb-1">Cover Image</label>
+                    <input type="file" id="cover_image" name="cover_image" class="border rounded-md px-4 py-2 focus:outline-none focus:border-blue-500" accept="image/*" required>
+                </div>
+                <div class="mb-4">
+                    <label for="soft_copy" class="block text-sm font-semibold text-gray-600 mb-1">Soft Copy (PDF)</label>
+                    <input type="file" id="soft_copy" name="soft_copy" class="border rounded-md px-4 py-2 focus:outline-none focus:border-blue-500" accept=".pdf" required>
+                </div>
+                <div class="mb-4">
+                    <label for="youtube_link" class="block text-sm font-semibold text-gray-600 mb-1">YouTube Link</label>
+                    <input type="url" id="youtube_link" name="youtube_link" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-500" placeholder="https://www.youtube.com/watch?v=yourvideo" pattern="https?://.+">
+                </div>
+                <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600">Upload Book</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

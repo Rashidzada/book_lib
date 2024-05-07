@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Profile</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-gray-100 font-sans leading-normal tracking-normal">
+
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-3xl font-bold text-gray-800 mb-8 text-center">Upload Profile</h1>
+
+        <form method="POST" enctype="multipart/form-data" class="max-w-lg mx-auto bg-white p-8 rounded-lg shadow-md">
+            {% csrf_token %}
+            <div class="mb-6">
+                <label for="bio" class="block text-sm font-semibold text-gray-700 mb-2">Bio:</label>
+                <textarea id="bio" name="bio" rows="4" cols="50" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500" required></textarea>
+            </div>
+
+            <div class="mb-6">
+                <label for="picture" class="block text-sm font-semibold text-gray-700 mb-2">Profile Picture:</label>
+                <input type="file" id="picture" name="picture" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500" required>
+            </div>
+
+            <div class="mb-6">
+                <label for="phone" class="block text-sm font-semibold text-gray-700 mb-2">Phone:</label>
+                <input type="text" id="phone" name="phone" value="{{user.phone}}" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500" required>
+            </div>
+
+            <div class="text-center relative">
+                <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold px-6 py-3 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <span>Upload</span>
+                    <span class="absolute inset-0 flex items-center justify-center opacity-0 transition duration-1000 ease-in-out">
+                        <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 4.418 3.582 8 8 8v-4c-1.654 0-3.2-.64-4.373-1.709l1.373-1.373z"></path>
+                        </svg>
+                    </span>
+                </button>
+            </div>
+        </form>
+    </div>
+
+</body>
+
+</html>

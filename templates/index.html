@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Lib</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@glidejs/glide/dist/css/glide.core.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@glidejs/glide/dist/css/glide.theme.min.css">
+</head>
+
+<body class="bg-gray-100 font-sans leading-normal tracking-normal">
+    {% extends 'base.html'%}
+    {% block content %}
+    <!-- Navigation -->
+
+    <!-- Hero Section -->
+    <div class="pt-24 bg-cover bg-center" style="background-image: url('https://source.unsplash.com/random/1600x900');">
+        <div class="container mx-auto px-4">
+
+            <div class="flex flex-col items-center justify-center h-full text-center">
+                <h1 class="text-5xl font-bold text-white leading-tight mb-4">Discover Your Next Favorite Book</h1>
+                <p class="text-lg text-white mb-8">Explore a vast collection of books in our library.</p>
+                {% if user.is_authenticated%}
+                <a href="{% url 'dashboard' %}"
+                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Go To DashBoard</a>
+                
+                    {%else%}
+                    <a href="{% url 'signup'%}"
+                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Get Started</a>
+                    {%endif%}
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Featured Books Section -->
+    <div class="bg-white py-8">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-gray-800 mb-4">Featured Books</h2>
+            <div class="glide">
+                <div class="glide__track" data-glide-el="track">
+                    <ul class="glide__slides">
+                        <li class="glide__slide">
+                            <div class="bg-gray-200 rounded-lg shadow-md overflow-hidden transform transition duration-300 hover:scale-105">
+                                <img src="https://source.unsplash.com/random/400x301" alt="Book Cover 1"
+                                    class="w-full h-64 object-cover">
+                                <div class="p-4">
+                                    <h3 class="text-xl font-bold mb-2">Book Title 1</h3>
+                                    <p class="text-gray-700">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                                    <a href="#"
+                                        class="mt-2 inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">View
+                                        Details</a>
+                                </div>
+                            </div>
+                        </li>
+                        <!-- Add more slides here -->
+                    </ul>
+                </div>
+                <div class="glide__arrows" data-glide-el="controls">
+                    <button class="glide__arrow glide__arrow--left" data-glide-dir="<">prev</button>
+                    <button class="glide__arrow glide__arrow--right" data-glide-dir=">">next</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@glidejs/glide"></script>
+    <script>
+        // Mobile navigation toggle
+        document.getElementById('nav-toggle').onclick = function () {
+            document.getElementById("nav-content").classList.toggle("hidden");
+        }
+
+        new Glide('.glide', {
+            type: 'carousel',
+            startAt: 0,
+            perView: 1,
+            autoplay: 5000, // Adjust the autoplay speed as needed
+            hoverpause: true,
+            animationDuration: 1000, // Animation speed
+        }).mount();
+    </script>
+    {% endblock %}
+</body>
+
+</html>

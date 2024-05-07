@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - Book Lib</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-gray-100 font-sans leading-normal tracking-normal">
+
+    <!-- Navigation -->
+     {% extends 'base.html'%}
+     {% block content%}
+
+    <!-- About Section -->
+    <div class="pt-24 bg-cover bg-center" style="background-image: url('https://source.unsplash.com/random/1600x900');">
+        <div class="container mx-auto px-4">
+
+            <div class="flex flex-col items-center justify-center h-full text-center">
+                <h1 class="text-5xl font-bold text-white leading-tight mb-4">About Book Lib</h1>
+                <p class="text-lg text-white mb-8">Learn more about us and our mission.</p>
+                <a href="#" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Learn More</a>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- About Content Section -->
+    <div class="bg-white py-8">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-gray-800 mb-4">Our Story</h2>
+            <p class="text-gray-700">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam interdum mi id
+                libero mattis, nec efficitur arcu congue.</p>
+                <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Amet porro quasi repudiandae, officiis beatae dolor in aut dolores vero provident natus qui unde quas, necessitatibus voluptatem itaque. Similique voluptatibus animi molestias. At distinctio atque excepturi culpa vero doloribus animi maiores non, odit voluptate iure ducimus quia quos, voluptatibus dignissimos, amet reprehenderit eos nisi. Et reprehenderit commodi dicta suscipit non vel soluta sunt, aliquam libero ea assumenda magnam corporis nemo ab, quia explicabo recusandae accusamus natus quod! Corrupti, distinctio. Animi ipsum, incidunt veniam, atque consequuntur ex laboriosam veritatis, aspernatur voluptatum minima consequatur corrupti quos? Esse, recusandae excepturi. Mollitia, dolorem labore natus impedit officiis sunt itaque cupiditate velit quam harum quidem veritatis laudantium, accusantium amet ipsum, odio ipsa sit earum repudiandae ullam fugiat et quo. Perspiciatis exercitationem, quisquam id non omnis, magnam doloribus, maxime veritatis nam sequi repellat. Enim, distinctio vero ipsum quidem laboriosam itaque, magnam, nihil dolorem quae quos culpa repellat ratione commodi eius ut fugit? Aspernatur fuga quae quibusdam corporis similique ut dignissimos illum reiciendis neque dolorem, earum accusamus quaerat ipsum! Earum, iure atque eligendi omnis minima perspiciatis doloribus voluptatum? Provident animi eos fugiat minus totam corporis. Eius aperiam ut facilis, assumenda facere deserunt? Exercitationem iusto necessitatibus ipsam optio nobis! Et voluptatum optio laborum voluptate eum totam odio excepturi! Sunt quo labore laboriosam tenetur minima perspiciatis aliquid, odio neque illum nesciunt voluptas harum. Voluptates, architecto sed sunt, omnis aperiam rem totam quia sequi quos dolorem laborum ullam magni officia quasi velit et placeat nulla nihil repellendus impedit. Non deserunt dolorum laboriosam voluptates neque quas similique, ex, eveniet, omnis dolorem maxime deleniti accusamus totam sed perspiciatis nam aperiam! Voluptates eligendi hic vero autem error doloremque repellendus, sapiente illo, sunt voluptatibus amet ipsam, illum veritatis libero soluta deleniti qui sit commodi odit aliquid eveniet odio! Labore impedit aut consequuntur consectetur, dolores facere! Perspiciatis eligendi corrupti adipisci accusantium modi dolorum suscipit maxime recusandae unde quisquam reiciendis odio quasi voluptatum ad, culpa nisi atque, sunt doloribus fuga magni nemo est doloremque! Quo maiores saepe aperiam veritatis a eos aliquid fugit harum ex laboriosam eum delectus laudantium ipsum, et inventore totam, porro officiis omnis aliquam impedit. Voluptas quas nesciunt laudantium sit asperiores expedita porro culpa dolor ipsa, neque, dolorum nobis quae officia exercitationem illum. Porro iure molestias sequi ipsam excepturi. Nam ipsa dolore saepe eaque qui harum quasi laboriosam, eligendi atque, et maiores sit velit quam ex laborum veniam architecto doloremque! Praesentium alias deserunt quibusdam.</p>
+            <!-- Add more about content here -->
+        </div>
+    </div>
+
+    <!-- Footer -->
+    {% endblock%}
+    <!-- Scripts -->
+    <script>
+        // Mobile navigation toggle
+        document.getElementById('nav-toggle').onclick = function () {
+            document.getElementById("nav-content").classList.toggle("hidden");
+        }
+    </script>
+
+</body>
+
+</html>
