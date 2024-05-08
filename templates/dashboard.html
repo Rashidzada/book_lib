@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <!-- Include Tailwind CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-200">
+    <!-- Navbar -->
+    <nav class="bg-blue-500 p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <!-- Display username -->
+            <a href="/" class="text-white font-bold text-lg">Book Lib Dashboard</a>
+            
+                <div>
+                    <a href="{% url 'profile' %}" class="text-white mr-4">Profile</a>
+                    <a href="{% url 'logout_view' %}" class="text-white">Logout</a>
+                    {% if role == 'teacher' %}
+                    <a href="{% url 'upload_book'%}" class="text-white ml-4">Add Book</a>
+                    <a href="{% url 'available_books'%}" class="text-white ml-4">Available Books</a>
+                    
+                    <!-- Add more links as needed -->
+                    {% endif %}
+
+
+                    {% if role == 'student' %}
+                    <a href="" class="text-white ml-4">All Request</a>
+                    <a href="" class="text-white ml-4">View Loan Books</a>
+                    
+                    <!-- Add more links as needed -->
+                    {% endif %}
+                </div>
+        </div>
+    </nav>
+    <!-- Main Content -->
+    <div class="container mx-auto mt-8">
+        <div class="bg-white p-4 rounded shadow-md">
+            <h1 class="text-2xl font-bold mb-4">Welcome to Your Dashboard</h1>
+            <p>Your Role: {{ role }}</p>
+            <p>Bio: {{ bio }}</p>
+            {% if picture_url %}
+            <img src="{{ picture_url.url }}" alt="Profile Picture" class="w-32 h-32 rounded-full mt-4">
+            {% endif %}
+            <p>Phone: {{ phone }}</p>
+        </div>
+    </div>
+</body>
+</html>

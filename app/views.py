@@ -1,9 +1,10 @@
-from django.shortcuts import render
+
 from django.shortcuts import render, redirect,get_object_or_404
 from django.contrib.auth import authenticate, login,logout
 from django.contrib.auth.models import User
 from django.contrib import messages
-from .models import UserProfile,Book
+from .models import *
+from django.db import IntegrityError
 from django.contrib.auth.decorators import login_required
 # Create your views here.
 
@@ -17,7 +18,6 @@ def contact(request):
 
 def about(request):
     return render(request,'about.html')
-
 
 
 def book(request):
@@ -35,8 +35,7 @@ def login_view(request):
 
         user = authenticate(request, username=email, password=password)
         if user is not None:
-            login(request, user)
-            
+            login(request, user) 
             # Check user's role
             try:
                 user_profile = UserProfile.objects.get(user=user)
@@ -45,9 +44,9 @@ def login_view(request):
 
             if user_profile is not None:
                 if user_profile.role == 'teacher':
-                    return redirect('teacher_dashboard')  # Redirect to teacher dashboard
+                    return redirect('dashboard')  # Redirect to teacher dashboard
                 else:
-                    return redirect('student_dashboard')  # Redirect to student dashboard
+                    return redirect('dashboard')  # Redirect to student dashboard
             else:
                 messages.error(request, "User profile not found.")
         else:
@@ -58,20 +57,17 @@ def login_view(request):
 
 
 
-
-
 def signup(request):
     if request.method == 'POST':
         email = request.POST['email']
         username = email  # Use email as username
-        first_name = request.POST['username']
         password = request.POST['password']
         confirm_password = request.POST['confirm_password']
         role = request.POST['role']
 
-        # Check if email or username already exists
-        if User.objects.filter(username=username).exists() or User.objects.filter(email=email).exists():
-            messages.error(request, "Email or username already exists.")
+        # Check if email already exists
+        if User.objects.filter(email=email).exists():
+            messages.error(request, "Email already exists.")
             return render(request, 'signup.html')
 
         # Check if passwords match
@@ -80,9 +76,9 @@ def signup(request):
             return render(request, 'signup.html')
 
         # Create a new user
-        user = User.objects.create_user(username=email, email=email, password=password, first_name=first_name, is_staff=True)
+        user = User.objects.create_user(username=username, email=email, password=password, is_staff=True)
 
-        # Create a user profile
+        # Create a user profile with the role
         profile = UserProfile(user=user, role=role)
         profile.save()
 
@@ -97,15 +93,6 @@ def logout_view(request):
     return redirect('index')
 
 @login_required(login_url='login_view')
-def teacher_dashboard(request):
-    return render(request,'teacher_dashboard.html')
-
-@login_required(login_url='login_view')
-def student_dashboard(request):
-    return render(request,'student_dashboard.html')
-
-
-@login_required(login_url='login_view')
 def profile(request):
     context = None
     try:
@@ -117,16 +104,6 @@ def profile(request):
         print(e)
         messages.error(request, "User profile not found.")
     return render(request,'profile.html',context=context)
-
-
-
-
-
-from django.shortcuts import render, redirect
-from .models import UserProfile
-
-from django.shortcuts import render, redirect
-from .models import UserProfile
 
 def upload_profile(request):
     user = request.user
@@ -154,22 +131,16 @@ def upload_profile(request):
     else:
         return render(request, 'upload_profile.html', {'user': user})
 
-
-
 @login_required(login_url='login_view')
 def dashboard(request):
-    if UserProfile.objects.filter(role = 'teacher'):
-        return teacher_dashboard(request=request)
-    elif UserProfile.objects.filter(role = 'student'):
-        return student_dashboard(request=request)
-    
-    return redirect('index')
+    user_profile = UserProfile.objects.get(user=request.user)
+    role = user_profile.role
+    bio = user_profile.bio
+    picture_url = user_profile.picture if user_profile.picture else None
+    phone = user_profile.phone
 
+    return render(request, 'dashboard.html', {'role': role, 'bio': bio, 'picture_url': picture_url, 'phone': phone})
 
-
-
-from django.shortcuts import render, redirect
-from .models import UserProfile  # Assuming UserProfile is your model
 
 def edit_profile(request):
     user = request.user
@@ -183,7 +154,6 @@ def edit_profile(request):
 
         # Update the existing profile instance
         profile.bio = bio
-        profile.role = str(user)
         if picture:
             profile.picture = picture
         profile.phone = phone
@@ -194,9 +164,6 @@ def edit_profile(request):
         return render(request, 'edit_profile.html', {'profile': profile})
 
 
-
-
-from django.db import IntegrityError
 
 def upload_book(request):
     user_profile = request.user.userprofile 
@@ -243,8 +210,6 @@ def upload_book(request):
         return render(request, 'upload_book.html')
 
 
-
-
 @login_required(login_url='login_view')
 def available_books(request):
     user_profile = request.user.userprofile  # Assuming user profile is linked to User
@@ -257,9 +222,6 @@ def book_details(request, book_id):
     book = get_object_or_404(Book, pk=book_id)
     return render(request, 'book_details.html', {'book': book})
 
-
-from django.shortcuts import get_object_or_404, redirect, render
-from .models import Book
 
 def edit_book(request, book_id):
     book = get_object_or_404(Book, id=book_id)
@@ -283,9 +245,6 @@ def edit_book(request, book_id):
 
     return render(request, 'edit_book.html', {'book': book})
 
-
-from django.shortcuts import get_object_or_404, redirect
-from .models import Book
 
 def delete_book(request, book_id):
     book = get_object_or_404(Book, id=book_id)
