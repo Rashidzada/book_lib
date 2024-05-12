@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Requests</title>
+    <!-- Include Tailwind CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        .card {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-blue {
+            background-color: #3490dc;
+            color: #fff;
+        }
+
+        .btn-blue:hover {
+            background-color: #2779bd;
+        }
+
+        .btn-red {
+            background-color: #e3342f;
+            color: #fff;
+        }
+
+        .btn-red:hover {
+            background-color: #cc1f1a;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100">
+    <div class="container mx-auto py-8">
+        <h1 class="text-3xl font-bold mb-4">Pending Requests</h1>
+        {% if requests %}
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {% for request in requests %}
+            <div class="card p-4 rounded-lg shadow-md">
+                <p class="text-lg font-semibold mb-2">Student: {{ request.student.username }}</p>
+                <p class="text-gray-600 mb-2">Book Title: {{ request.book.title }}</p>
+                <p class="mb-4">
+                    <span class="inline-block px-2 py-1 text-xs font-semibold leading-none {% if request.status == 'pending' %} bg-yellow-300 text-yellow-800 {% elif request.status == 'approved' %} bg-green-300 text-green-800 {% elif request.status == 'rejected' %} bg-red-300 text-red-800 {% else %} bg-blue-300 text-blue-800 {% endif %} rounded">{{ request.get_status_display }}</span>
+                </p>
+                <form action="{% url 'approve_request' request.id %}" method="POST">
+                    {% csrf_token %}
+                    <label for="status" class="block mb-1">Change Status:</label>
+                    <select name="status" id="status" class="border border-gray-300 rounded-md py-1 px-3 mb-2">
+                        <option value="approved">Approve</option>
+                        <option value="rejected">Reject</option>
+                    </select>
+                    <button type="submit" class="btn-blue py-2 px-4 rounded">Update</button>
+                </form>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p class="text-lg font-semibold mb-4">No pending requests.</p>
+        <a href="{% url 'dashboard' %}" class="btn-red py-2 px-4 rounded">Back to Dashboard</a>
+        {% endif %}
+    </div>
+</body>
+
+</html>

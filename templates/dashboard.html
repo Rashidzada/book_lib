@@ -20,14 +20,17 @@
                     {% if role == 'teacher' %}
                     <a href="{% url 'upload_book'%}" class="text-white ml-4">Add Book</a>
                     <a href="{% url 'available_books'%}" class="text-white ml-4">Available Books</a>
+                    <a href="{% url 'view_requests'%}" class="text-white ml-4">View Students Requests</a>
                     
                     <!-- Add more links as needed -->
                     {% endif %}
 
 
                     {% if role == 'student' %}
-                    <a href="" class="text-white ml-4">All Request</a>
-                    <a href="" class="text-white ml-4">View Loan Books</a>
+                    {% if role == 'student'%}
+                    <a href="{% url 'available_books'%}" class="text-white ml-4">Request For Book</a>
+                    {% endif%}
+                    <a href="{% url 'student_requests'%}" class="text-white ml-4">View Loan Books</a>
                     
                     <!-- Add more links as needed -->
                     {% endif %}

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Requests</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+    {% for message in messages%}
+    <script>
+        alert('{{message}}');
+        
+    </script>
+    {%endfor%}
+    <!-- Navigation Bar -->
+    <nav class="bg-blue-500 py-4">
+        <div class="container mx-auto flex justify-between items-center px-4">
+            <a href="/" class="text-white text-lg font-bold">Home</a>
+            <a href="{% url 'dashboard' %}" class="text-white text-lg mr-4">Dashboard</a>
+            <div>
+                <a href="{% url 'profile' %}" class="text-white text-lg mr-4">Profile</a>
+                <a href="{% url 'logout_view' %}" class="text-white text-lg">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mx-auto py-8">
+        <h1 class="text-3xl font-bold text-center mb-8">Book Requests</h1>
+        <div class="overflow-x-auto">
+            <table class="table-auto w-full border-collapse border border-gray-400">
+                <thead>
+                    <tr>
+                        <th class="px-4 py-2 bg-blue-500 text-white">Book Title</th>
+                        <th class="px-4 py-2 bg-blue-500 text-white">Request Date</th>
+                        <th class="px-4 py-2 bg-blue-500 text-white">Status</th>
+                        <th class="px-4 py-2 bg-blue-500 text-white">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for request in student_requests %}
+                    <tr>
+                        <td class="border px-4 py-2">{{ request.book.title }}</td>
+                        <td class="border px-4 py-2">{{ request.request_date }}</td>
+                        <td class="border px-4 py-2 {% if request.status == 'rejected' %}bg-red-500 text-white{% endif %}">
+                            {% if request.status == 'pending' %}
+                                <span class="bg-yellow-500 text-white px-2 py-1 rounded">{{ request.status }}</span>
+                            {% elif request.status == 'approved' %}
+                                <span class="bg-green-500 text-white px-2 py-1 rounded">{{ request.status }}</span>
+                            {% else %}
+                                <span class="bg-red-500 text-white px-2 py-1 rounded">{{ request.status }}</span>
+                            {% endif %}
+                        </td>
+                        <td class="border px-4 py-2">
+                            {% if request.status == 'approved' %}
+                                <a href="{% url 'book_details' request.book.id %}" class="bg-blue-500 hover:bg-blue-600 text-white py-1 px-2 rounded-md text-center">View Details</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

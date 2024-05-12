@@ -27,7 +27,7 @@
                     class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Go To DashBoard</a>
                 
                     {%else%}
-                    <a href="{% url 'signup'%}"
+                    <a href="{% url 'login_view'%}"
                     class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Get Started</a>
                     {%endif%}
             </div>
@@ -42,19 +42,21 @@
             <div class="glide">
                 <div class="glide__track" data-glide-el="track">
                     <ul class="glide__slides">
+                        {% for book in books %}
                         <li class="glide__slide">
                             <div class="bg-gray-200 rounded-lg shadow-md overflow-hidden transform transition duration-300 hover:scale-105">
-                                <img src="https://source.unsplash.com/random/400x301" alt="Book Cover 1"
+                                <img src="{{book.cover_image.url}}" alt="Book Cover 1"
                                     class="w-full h-64 object-cover">
                                 <div class="p-4">
-                                    <h3 class="text-xl font-bold mb-2">Book Title 1</h3>
-                                    <p class="text-gray-700">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                                    <a href="#"
+                                    <h3 class="text-xl font-bold mb-2">{{book.title}}</h3>
+                                    <p class="text-gray-700">{{book.description}}.</p>
+                                    <a href="{% url 'book_details' book.id %}"
                                         class="mt-2 inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">View
                                         Details</a>
                                 </div>
                             </div>
                         </li>
+                        {%endfor%}
                         <!-- Add more slides here -->
                     </ul>
                 </div>

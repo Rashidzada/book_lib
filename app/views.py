@@ -6,10 +6,13 @@ from django.contrib import messages
 from .models import *
 from django.db import IntegrityError
 from django.contrib.auth.decorators import login_required
-# Create your views here.
+
 
 def index(request):
-    return render(request,'index.html')
+    context = {
+        'books':Book.objects.all().order_by('-id')
+    }
+    return render(request,'index.html',context)
 
 
 def contact(request):
@@ -21,7 +24,10 @@ def about(request):
 
 
 def book(request):
-    return render(request,'book.html')
+    context = {
+        'books':Book.objects.all().order_by('-id')
+    }
+    return render(request,'book.html',context)
 
 @login_required(login_url='login_view')
 def forum(request):
@@ -56,11 +62,10 @@ def login_view(request):
     return render(request, 'login_view.html')
 
 
-
 def signup(request):
     if request.method == 'POST':
         email = request.POST['email']
-        username = email  # Use email as username
+        username = request.POST['username']
         password = request.POST['password']
         confirm_password = request.POST['confirm_password']
         role = request.POST['role']
@@ -76,7 +81,7 @@ def signup(request):
             return render(request, 'signup.html')
 
         # Create a new user
-        user = User.objects.create_user(username=username, email=email, password=password, is_staff=True)
+        user = User.objects.create_user(username=email, email=email, password=password, is_staff=True,first_name = username)
 
         # Create a user profile with the role
         profile = UserProfile(user=user, role=role)
@@ -164,7 +169,6 @@ def edit_profile(request):
         return render(request, 'edit_profile.html', {'profile': profile})
 
 
-
 def upload_book(request):
     user_profile = request.user.userprofile 
     if request.method == 'POST':
@@ -211,17 +215,20 @@ def upload_book(request):
 
 
 @login_required(login_url='login_view')
-def available_books(request):
-    user_profile = request.user.userprofile  # Assuming user profile is linked to User
-    published_books = Book.objects.filter(published_by=user_profile)
+def available_books(request): 
+    user_profile = request.user.userprofile
+    if user_profile.role == 'student':
+         
+        published_books = Book.objects.all().order_by('-id')
+        
+    else:
+        published_books = Book.objects.filter(published_by=user_profile)
     return render(request, 'available_books.html', {'published_books': published_books})
-
 
 @login_required(login_url='login_view')
 def book_details(request, book_id):
     book = get_object_or_404(Book, pk=book_id)
     return render(request, 'book_details.html', {'book': book})
-
 
 def edit_book(request, book_id):
     book = get_object_or_404(Book, id=book_id)
@@ -245,8 +252,105 @@ def edit_book(request, book_id):
 
     return render(request, 'edit_book.html', {'book': book})
 
-
 def delete_book(request, book_id):
     book = get_object_or_404(Book, id=book_id)
     book.delete()
     return redirect('available_books')
+
+
+@login_required(login_url='login_view')
+def request_book(request, book_id):
+   
+    book = get_object_or_404(Book, pk=book_id)
+    # Check if the student has already requested the book
+    existing_request = Request.objects.filter(student=request.user, book=book).exists()
+    if existing_request:
+        # Inform the user about the duplicate request
+        messages.info(request, 'You have already requested this book.')
+        return redirect('student_requests')  # Redirect to the student requests page
+    if request.method == 'POST':
+        request_obj = Request(student=request.user, book=book)
+        request_obj.save()
+        messages.success(request, 'Book request successful!')
+        return redirect('student_requests')  # Redirect to the student requests page
+
+    return render(request, 'request_book.html', {'book': book})
+
+
+def student_requests(request):
+    # Fetch all book requests made by students
+    student_requests = Request.objects.filter(student=request.user)
+    context = {
+        'student_requests': student_requests,
+    }
+    return render(request, 'student_requests.html', context)
+
+
+
+def view_requests(request):
+    pending_requests = Request.objects.filter(status='pending')
+    return render(request, 'view_requests.html', {'requests': pending_requests})
+
+def approve_request(request, request_id):
+    if request.method == "POST":
+        status = request.POST['status']
+        request_instance = Request.objects.get(pk=request_id)
+        request_instance.status = status
+        request_instance.save()
+    return redirect('view_requests')
+
+
+
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from .models import Forum
+
+def forum(request):
+    if request.method == "POST":
+        title = request.POST.get('title')
+        content = request.POST.get('content')
+        if title and content:
+            Forum.objects.create(user=request.user, title=title, content=content)
+            messages.success(request, 'Your feedback was sent. Thank you!')
+            return redirect('forum')
+        else:
+            messages.error(request, 'Please provide both title and content.')
+    
+    # Fetch all forum posts
+    all_posts = Forum.objects.all().order_by('-created_at')  # Order by creation date, newest first
+
+    return render(request, 'forum.html', {'all_posts': all_posts})
+
+
+
+
+def contact(request):
+    if request.method == 'POST':
+        try:
+            # Extract form data
+            name = request.POST.get('name')
+            email = request.POST.get('email')
+            subject = request.POST.get('subject')
+            message = request.POST.get('message')
+
+            # Create and save the contact instance
+            contact = Contact(name=name, email=email, subject=subject, message=message)
+            contact.save()
+
+            # Success message
+            messages.success(request, "Your message has been sent successfully!")
+            return redirect('thankyou')
+        except Exception as e:
+            # Log the error if necessary (e.g., with logging module)
+            # Error message for the user
+            messages.error(request, "An error occurred while sending your message. Please try again.")
+    else:
+        # Warning message if the request method is not POST
+        messages.warning(request, "Your message request was not sent. Please try again using the form.")
+
+    return render(request, 'contact.html')
+
+
+
+def thankyou(request):
+    return render(request,'thankyou.html')
