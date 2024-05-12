@@ -12,8 +12,12 @@
     <!-- Navigation Bar -->
     <nav class="bg-blue-500 py-4">
         <div class="container mx-auto flex justify-between items-center px-4">
-            <a href="{% url 'available_books'%}" class="text-white text-lg font-bold">Available-books Stock</a>
+        {% if request.user.userprofile.role == 'teacher'%}
+        <a href="{% url 'available_books'%}" class="text-white text-lg font-bold">Available-books Stock</a>
             <a href="{% url 'upload_book' %}" class="text-white text-lg font-bold">Add New Book</a>
+            {%else%}
+            <a href="{% url 'available_books'%}" class="text-white text-lg font-bold">Available-books Stock</a>
+        {%endif%}
         </div>
     </nav>
 
